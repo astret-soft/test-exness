@@ -1,6 +1,6 @@
 PYTHON = python3
 
-.PHONY = help setup test lint clean
+.PHONY = help setup test lint clean serve
 .DEFAULT_GOAL = help
 
 help:
@@ -8,6 +8,7 @@ help:
   @echo "test - запуск автотестов"
   @echo "lint - запуск линтера"
   @echo "clean - очистка проекта от временных файлов"
+  @echo "serve - запуск сервиса"
 
 setup:
   @echo "Setup..."
@@ -24,3 +25,6 @@ lint:
 
 clean:
   @rm -rf build dist *.egg-info
+
+serve:
+  ${PYTHON} -m uvicorn main:app --reload

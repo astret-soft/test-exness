@@ -25,6 +25,7 @@ async def total_price(request: TotalPriceRequest):
 
 @app.get('/us-code', response_model=USCodeResponse)
 async def us_code(code: Optional[str]):
+    # note: нужно для возможного UI, чтобы выбирать штат
     return [
         {
             'us_code': item.value,
@@ -35,4 +36,6 @@ async def us_code(code: Optional[str]):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=4242)
+    # note: в задании нет требования все поднимать в docker и тд,
+    # конфигурацию не создаю (yaml, json, env...)
+    uvicorn.run(app, host='0.0.0.0', port=4242)
