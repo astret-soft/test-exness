@@ -1,11 +1,10 @@
-from decimal import Decimal
 from typing import List
+from decimal import Decimal
 
-from cached_property import cached_property
 from pydantic import (
     BaseModel,
     conint,
-    condecimal,
+    condecimal
 )
 
 from constants import *
@@ -23,39 +22,40 @@ class TotalPriceRequest(BaseModel):
     price: condecimal(ge=Decimal(0))
     us_code: USCodeEnum
 
-    @cached_property
-    def gross_total_price(self) -> Decimal:
+    @property
+    def gross_total_price(self):
         return self.qty * self.price
 
-    @cached_property
-    def discount_for_total_price(self) -> Decimal:
+    @property
+    def discount_for_total_price(self):
         return next(
             discount for edge, discount
             in reversed(TOTAL_COST_TO_DISCOUNT)
             if self.gross_total_price >= edge
         )
 
-    @cached_property
-    def us_tax(self) -> Decimal:
+    @property
+    def us_tax(self) :
         return self.us_code.value[1]
 
-    @cached_property
-    def total_price(self) -> Decimal:
+    @property
+    def total_price(self):
         return self.gross_total_price * \
                self.discount_for_total_price * \
                (1 - self.us_tax)
 
 
 class TotalPriceResponse(BaseModel):
-    discount_for_total_price: Decimal
-    us_tax: Decimal
-    total_price: Decimal
+    discount_for_total_price: float
+    us_tax: float
+    total_price: float
 
 
 class USCode(BaseModel):
     us_code: str
-    us_tax: Decimal
+    us_tax: float
 
 
 class USCodeResponse(BaseModel):
-    __root__ = List[USCode]
+    __root__: List[USCode]
+
