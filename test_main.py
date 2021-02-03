@@ -16,31 +16,31 @@ client = TestClient(app)
 async def test_version():
     async with AsyncClient(app=app, base_url='http://test') as ac:
         response = await ac.get('app/version')
-    assert response.status_code == 200
-    validate(
-        response.json(),
-        {
-            'type': 'object',
-            'properties': {
-                'version': {
-                    'type': 'number',
-                }
-            },
-            'additionalProperties': False,
-            'required': [
-                'version'
-            ]
-        }
-    )
+        assert response.status_code == 200
+        validate(
+            response.json(),
+            {
+                'type': 'object',
+                'properties': {
+                    'version': {
+                        'type': 'number',
+                    }
+                },
+                'additionalProperties': False,
+                'required': [
+                    'version'
+                ]
+            }
+        )
 
 
 @pytest.mark.asyncio
 async def test_get_us_code_all():
     async with AsyncClient(app=app, base_url='http://test') as ac:
         response = await ac.get('us-code', params={'code': None})
-    assert response.status_code == 200, response.content
-    result = {item['us_code']: item['us_tax'] for item in response.json()}
-    assert result == {item.value: item.tax for item in USCodeEnum}
+        assert response.status_code == 200, response.content
+        result = {item['us_code']: item['us_tax'] for item in response.json()}
+        assert result == {item.value: item.tax for item in USCodeEnum}
 
 
 @pytest.mark.asyncio
@@ -52,11 +52,11 @@ async def test_get_us_code(us_code: USCodeEnum):
         response = await ac.get('/us-code', params={
             'code': us_code.value
         })
-    assert response.status_code == 200, response.content
-    assert response.json() == [{
-        'us_code': us_code.value,
-        'us_tax': us_code.tax
-    }]
+        assert response.status_code == 200, response.content
+        assert response.json() == [{
+            'us_code': us_code.value,
+            'us_tax': us_code.tax
+        }]
 
 
 @pytest.mark.asyncio
@@ -70,8 +70,8 @@ async def test_negative_get_us_code(us_code: str):
         response = await ac.get('/us-code', params={
             'code': us_code
         })
-    assert 400 <= response.status_code < 300 \
-           or len(response.json()) == 0, response.content
+        assert 400 <= response.status_code < 300 \
+               or len(response.json()) == 0, response.content
 
 
 @pytest.mark.asyncio
