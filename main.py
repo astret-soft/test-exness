@@ -9,6 +9,11 @@ from models import *
 app = FastAPI()
 
 
+@app.get('/app/version')
+async def version():
+    return {'version': 1}
+
+
 @app.post('/total-price', response_model=TotalPriceResponse)
 async def total_price(request: TotalPriceRequest):
     return {
@@ -19,14 +24,13 @@ async def total_price(request: TotalPriceRequest):
 
 
 @app.get('/us-code', response_model=USCodeResponse)
-async def total_price(code: Optional[USCodeEnum]):
+async def us_code(code: Optional[str]):
     return [
-        {**zip(('us_code', 'us_tax'), value)}
-        for value in filter(
-            lambda us_code:
-            code is None or code == us_code,
-            USCodeEnum
-        )
+        {
+            'us_code': item.value,
+            'us_tax': item.tax
+        } for item in USCodeEnum
+        if not code or code == item.value
     ]
 
 

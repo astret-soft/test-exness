@@ -1,10 +1,11 @@
+""" Модели для API запросов и ответов
+"""
 from typing import List
-from decimal import Decimal
 
 from pydantic import (
     BaseModel,
     conint,
-    condecimal
+    confloat
 )
 
 from constants import *
@@ -16,10 +17,15 @@ __all__ = (
     'USCodeResponse',
 )
 
+# note: правильнее использовать Decimal для расчетов
+# вместо float (сильная погрешность при расчетах)
+
 
 class TotalPriceRequest(BaseModel):
+    """
+    """
     qty: conint(gt=0)
-    price: condecimal(ge=Decimal(0))
+    price: confloat(ge=0)
     us_code: USCodeEnum
 
     @property
@@ -35,14 +41,14 @@ class TotalPriceRequest(BaseModel):
         )
 
     @property
-    def us_tax(self) :
-        return self.us_code.value[1]
+    def us_tax(self):
+        return self.us_code.tax
 
     @property
     def total_price(self):
         return self.gross_total_price * \
-               self.discount_for_total_price * \
-               (1 - self.us_tax)
+               self.discount_for_total_price / 100 * \
+               (100 - self.us_tax) / 100
 
 
 class TotalPriceResponse(BaseModel):
@@ -58,4 +64,3 @@ class USCode(BaseModel):
 
 class USCodeResponse(BaseModel):
     __root__: List[USCode]
-
