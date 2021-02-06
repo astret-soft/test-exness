@@ -19,7 +19,7 @@ async def total_price(request: TotalPriceRequest):
     return {
         'discount_for_total_price': request.discount_for_total_price,
         'us_tax': request.us_tax,
-        'total_price': request.total_price
+        'total_price': float(request.total_price)
     }
 
 
