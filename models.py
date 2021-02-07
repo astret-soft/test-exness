@@ -23,8 +23,6 @@ __all__ = (
 
 
 class TotalPriceRequest(BaseModel):
-    """
-    """
     qty: conint(gt=0)
     price: condecimal(ge=0)
     us_code: USCodeEnum

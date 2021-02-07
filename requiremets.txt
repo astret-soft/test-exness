@@ -26,6 +26,7 @@ pytest==6.2.2
 pytest-asyncio==0.14.0
 pytest-html==3.1.1
 pytest-metadata==1.11.0
+python-multipart==0.0.5
 requests==2.25.1
 rfc3986==1.4.0
 six==1.15.0
