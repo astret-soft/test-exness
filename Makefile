@@ -18,8 +18,7 @@ setup:
 	)
 
 test:
-	${PYTHON} -m pytest -n auto --html=report.html
-
+	${PYTHON} -m pytest
 lint:
 	@pylint constants.py main.py models.py
 
