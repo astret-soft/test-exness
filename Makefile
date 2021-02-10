@@ -18,7 +18,7 @@ setup:
 	)
 
 test:
-	${PYTHON} -m pytest -n auto --dist loadscope --html=report.html
+	${PYTHON} -m pytest -n auto --html=report.html
 
 lint:
 	@pylint constants.py main.py models.py
